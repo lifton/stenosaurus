@@ -24,7 +24,7 @@ LD := $(PREFIX)-gcc
 OBJCOPY := $(PREFIX)-objcopy
 
 TOOLCHAIN_DIR := $(shell dirname `which $(CC)`)/../$(PREFIX)
-OPENCM3_DIR := $(shell dirname $(lastword $(MAKEFILE_LIST)))/libopencm3
+OPENCM3_DIR := $(shell dirname $(lastword $(MAKEFILE_LIST)))/lib/libopencm3
 
 ARCH_FLAGS := -mthumb -mcpu=cortex-m3 -msoft-float
 ALL_CFLAGS := -Os -g -std=gnu99 \
