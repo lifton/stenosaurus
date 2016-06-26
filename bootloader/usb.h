@@ -25,6 +25,7 @@
 #ifndef STENOSAURUS_BOOTLOADER_USB_H
 #define STENOSAURUS_BOOTLOADER_USB_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 void init_usb(bool (*)(uint8_t*));
