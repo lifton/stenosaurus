@@ -20,6 +20,7 @@
 #ifndef STENOSAURUS_BOOTLOADER_MEMORYMAP_H
 #define STENOSAURUS_BOOTLOADER_MEMORYMAP_H
 
+#include <stdint.h>
 // The area where the firmware program resides.
 static const uint32_t PROGRAM_AREA_BEGIN = 0x08000000 + 1024 * 8;
 // The size of pages in flash.
