@@ -19,6 +19,7 @@
 
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
+#include "clock.h"
 #include "leds.h"
 #include "keys.h"
 #include "lcd.h"
@@ -28,7 +29,8 @@ uint16_t a_keys, b_keys, c_keys, d_keys, e_keys;
 static void clock_setup(void)
 {
   /* Set STM32 to 24 MHz. */
-  rcc_clock_setup_in_hse_8mhz_out_24mhz();
+  //rcc_clock_setup_in_hse_8mhz_out_24mhz();
+  clock_init();
 
   /* Enable clocks for all ports. */
   rcc_periph_clock_enable(RCC_GPIOA);
@@ -38,23 +40,13 @@ static void clock_setup(void)
   rcc_periph_clock_enable(RCC_GPIOE);
 }
 
-#define MILLISECOND 1000
-
-static void delay(int ticks)
-{
-  int i;
-  for (i = 0; i < ticks; i++) {
-    __asm__("nop");
-  }
-}
-
 static void leds_blink(uint32_t n)
 {
   while (n--) {
     leds_on();
-    delay(100000);
+    delay(1000);
     leds_off();
-    delay(900000);
+    delay(500);
   }
 }
 

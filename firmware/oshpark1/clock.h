@@ -28,4 +28,6 @@ extern volatile uint32_t system_millis;
 
 void clock_init(void);
 
+void delay(uint32_t millis);
+
 #endif // STENOSAURUS_FIRMWARE_CLOCK_H

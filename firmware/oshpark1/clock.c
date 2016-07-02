@@ -52,3 +52,11 @@ void sys_tick_handler(void) {
         scb_reset_system();
     }
 }
+
+// Return only after the given number of milliseconds.
+void delay(uint32_t millis)
+{
+  uint32_t end_time = system_millis + millis;
+  while (system_millis != end_time);
+}
+

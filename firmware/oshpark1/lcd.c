@@ -18,20 +18,10 @@
  */
 
 #include "lcd.h"
+#include "clock.h"
 #include <libopencm3/stm32/dac.h>
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
-
-/* XXX : remove me */
-#define MILLISECOND 1000
-static void delay(int ticks)
-{
-  int i;
-  for (i = 0; i < ticks; i++) {
-    __asm__("nop");
-  }
-}
-/* end remove me */
 
 static void lcd_set_data(uint8_t value)
 {
@@ -44,9 +34,9 @@ static void lcd_send_command(uint8_t command)
   gpio_clear(LCD_PORT, LCD_READ_WRITE_PIN);
   gpio_clear(LCD_PORT, LCD_REGISTER_SELECT_PIN);
   gpio_set(LCD_PORT, LCD_ENABLE_PIN);
-  delay(MILLISECOND);
+  delay(1);
   gpio_clear(LCD_PORT, LCD_ENABLE_PIN);
-  delay(50*MILLISECOND);
+  delay(50);
 }
 
 static void lcd_send_character(char character)
@@ -55,9 +45,9 @@ static void lcd_send_character(char character)
   gpio_clear(LCD_PORT, LCD_READ_WRITE_PIN);
   gpio_set(LCD_PORT, LCD_REGISTER_SELECT_PIN);
   gpio_set(LCD_PORT, LCD_ENABLE_PIN);
-  delay(MILLISECOND);
+  delay(1);
   gpio_clear(LCD_PORT, LCD_ENABLE_PIN);
-  delay(50*MILLISECOND);
+  delay(50);
 }
 
 void lcd_setup(void)
