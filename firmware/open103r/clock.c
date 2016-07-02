@@ -37,8 +37,8 @@ void clock_init(void) {
     // But in the examples we see HSI used with USB and it also seems to work.
     rcc_clock_setup_in_hsi_out_48mhz();
 
-    // One millisecond is clock rate (48Mhz) divided by a thousand = 48K.
-    systick_set_reload(48000);
+    // One millisecond is clock rate (48Mhz) divided by a two*thousand = 24K.
+    systick_set_reload(24000);
     systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
     systick_counter_enable();
     systick_interrupt_enable();
