@@ -1,6 +1,7 @@
 // This file is part of the stenosaurus project.
 //
 // Copyright (C) 2013 Hesky Fisher <hesky.fisher@gmail.com>
+// Copyright (C) 2016 Joshua Harlan Lifton
 //
 // This library is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -26,7 +27,7 @@
 
 extern volatile uint32_t system_millis;
 
-void clock_init(void);
+void clock_setup(void);
 
 void delay(uint32_t millis);
 

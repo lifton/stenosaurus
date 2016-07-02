@@ -1,6 +1,7 @@
 // This file is part of the stenosaurus project.
 //
 // Copyright (C) 2013 Hesky Fisher <hesky.fisher@gmail.com>
+// Copyright (C) 2016 Joshua Harlan Lifton
 //
 // This library is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
@@ -23,13 +24,12 @@
 #include <libopencm3/cm3/scb.h>
 #include <libopencm3/cm3/systick.h>
 #include <libopencm3/stm32/rcc.h>
-#include <stdint.h>
 #include <stdlib.h>
 
 // Rolls over after ~49 days. If the device is on that long then it will reboot.
 volatile uint32_t system_millis;
 
-void clock_init(void) {
+void clock_setup(void) {
     // Set the clock to use the 8Mhz internal high speed (hsi) clock as input
     // and set the output of the PLL at 48Mhz. Since we're using USB we are
     // limited to two clock speeds: 48Mhz or 72Mhz.
@@ -42,6 +42,13 @@ void clock_init(void) {
     systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
     systick_counter_enable();
     systick_interrupt_enable();
+
+    // Enable clocks for all ports.
+    rcc_periph_clock_enable(RCC_GPIOA);
+    rcc_periph_clock_enable(RCC_GPIOB);
+    rcc_periph_clock_enable(RCC_GPIOC);
+    rcc_periph_clock_enable(RCC_GPIOD);
+    rcc_periph_clock_enable(RCC_GPIOE);
 }
 
 // Implementing a function with this name makes it the handler for the systick

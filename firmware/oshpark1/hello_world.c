@@ -26,20 +26,6 @@
 
 uint16_t a_keys, b_keys, c_keys, d_keys, e_keys;
 
-static void clock_setup(void)
-{
-  /* Set STM32 to 24 MHz. */
-  //rcc_clock_setup_in_hse_8mhz_out_24mhz();
-  clock_init();
-
-  /* Enable clocks for all ports. */
-  rcc_periph_clock_enable(RCC_GPIOA);
-  rcc_periph_clock_enable(RCC_GPIOB);
-  rcc_periph_clock_enable(RCC_GPIOC);
-  rcc_periph_clock_enable(RCC_GPIOD);
-  rcc_periph_clock_enable(RCC_GPIOE);
-}
-
 static void leds_blink(uint32_t n)
 {
   while (n--) {
