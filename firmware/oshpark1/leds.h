@@ -42,4 +42,7 @@ void leds_on(void);
 /* Turn off all LEDs. */
 void leds_off(void);
 
+/* Blink all LEDs the indicated number of times. */
+void leds_blink(uint32_t n);
+
 #endif

@@ -18,6 +18,7 @@
  */
 
 #include "leds.h"
+#include "clock.h"
 
 void leds_setup(void)
 {
@@ -57,3 +58,14 @@ void leds_off(void)
   gpio_clear(LED2_PORT, LED2_PINS);
   gpio_clear(LED3_PORT, LED3_PINS);
 }
+
+void leds_blink(uint32_t n)
+{
+  while (n--) {
+    leds_on();
+    delay(1000);
+    leds_off();
+    delay(500);
+  }
+}
+

@@ -26,16 +26,6 @@
 
 uint16_t a_keys, b_keys, c_keys, d_keys, e_keys;
 
-static void leds_blink(uint32_t n)
-{
-  while (n--) {
-    leds_on();
-    delay(1000);
-    leds_off();
-    delay(500);
-  }
-}
-
 static uint32_t test_key(void) {
   uint16_t a_state, b_state, c_state, d_state, e_state;
 
