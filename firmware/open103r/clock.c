@@ -39,7 +39,7 @@ void clock_init(void) {
 
     // One millisecond is clock rate (48Mhz) divided by a thousand = 48K.
     systick_set_reload(48000);
-    systick_set_clocksource(STK_CTRL_CLKSOURCE_AHB);
+    systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
     systick_counter_enable();
     systick_interrupt_enable();
 }
