@@ -36,7 +36,7 @@ static void lcd_send_command(uint8_t command)
   gpio_set(LCD_PORT, LCD_ENABLE_PIN);
   delay(1);
   gpio_clear(LCD_PORT, LCD_ENABLE_PIN);
-  delay(50);
+  delay(10);
 }
 
 static void lcd_send_character(char character)
@@ -47,7 +47,7 @@ static void lcd_send_character(char character)
   gpio_set(LCD_PORT, LCD_ENABLE_PIN);
   delay(1);
   gpio_clear(LCD_PORT, LCD_ENABLE_PIN);
-  delay(50);
+  delay(10);
 }
 
 void lcd_setup(void)
