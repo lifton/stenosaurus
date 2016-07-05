@@ -47,14 +47,15 @@ static void clear_card_info(void) {
 // Set up the GPIO pins and peripheral clocks for the SDIO peripheral.
 void sdio_setup(void) {
     // Enable the clock for SDIO.
-    rcc_peripheral_enable_clock(&RCC_AHBENR, RCC_AHBENR_SDIOEN);
+    rcc_periph_clock_enable(RCC_SDIO);
     // Enable the clock for DMA2, which is the one connected to the SDIO.
-    rcc_peripheral_enable_clock(&RCC_AHBENR, RCC_AHBENR_DMA2EN);
+    rcc_periph_clock_enable(RCC_DMA2);
 
     // Enable the clock for all the IO ports used by SDIO and the card detect
     // pin.
-    rcc_peripheral_enable_clock(&RCC_APB2ENR, RCC_APB2ENR_IOPCEN);
-    rcc_peripheral_enable_clock(&RCC_APB2ENR, RCC_APB2ENR_IOPDEN);
+    rcc_periph_clock_enable(RCC_GPIOC);
+    rcc_periph_clock_enable(RCC_GPIOD);
+
 
     // Pin mappings for STM32F103.
     // PC6 - SDIO_WP
