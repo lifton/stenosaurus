@@ -33,7 +33,7 @@ typedef enum {
     SDIO_EUNKNOWN = 5,
 } sdio_error_t;
 
-void sdio_init(void);
+void sdio_setup(void);
 
 bool sdio_card_present(void);
 

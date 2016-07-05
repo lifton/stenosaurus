@@ -45,7 +45,7 @@ static void clear_card_info(void) {
 }
 
 // Set up the GPIO pins and peripheral clocks for the SDIO peripheral.
-void sdio_init(void) {
+void sdio_setup(void) {
     // Enable the clock for SDIO.
     rcc_peripheral_enable_clock(&RCC_AHBENR, RCC_AHBENR_SDIOEN);
     // Enable the clock for DMA2, which is the one connected to the SDIO.
@@ -53,11 +53,12 @@ void sdio_init(void) {
 
     // Enable the clock for all the IO ports used by SDIO and the card detect
     // pin.
-    rcc_peripheral_enable_clock(&RCC_APB2ENR, RCC_APB2ENR_IOPAEN);
     rcc_peripheral_enable_clock(&RCC_APB2ENR, RCC_APB2ENR_IOPCEN);
     rcc_peripheral_enable_clock(&RCC_APB2ENR, RCC_APB2ENR_IOPDEN);
 
     // Pin mappings for STM32F103.
+    // PC6 - SDIO_WP
+    // PC7 - SDIO_CD
     // PC8 - SDIO_D0
     // PC9 - SDIO_D1
     // PC10 - SDIO_D2
@@ -78,12 +79,12 @@ void sdio_init(void) {
                   GPIO_CNF_OUTPUT_ALTFN_PUSHPULL,
                   GPIO2);
 
-    // PA8 is pulled low on the WaveShare board when a card is present.
-    gpio_set_mode(GPIOA, GPIO_MODE_INPUT, GPIO_CNF_INPUT_PULL_UPDOWN, GPIO8);
-    // Set the output register for GPIOA pin8, which when configured as input
+    // Pulled low on when a card is present or write protect is on.
+    gpio_set_mode(GPIOC, GPIO_MODE_INPUT, GPIO_CNF_INPUT_PULL_UPDOWN, GPIO6 | GPIO7);
+    // Set the output register for digital inputs which when configured as input
     // with pullup/down, enables the pull-up resistor (resetting the  pin, which
     // is the default, enables the pull down resistor instead).
-    gpio_set(GPIOA, GPIO8);
+    gpio_set(GPIOC, GPIO6 | GPIO7);
 }
 
 // Send a command on the SDIO bus.
@@ -190,13 +191,13 @@ static sdio_error_t send_application_command(uint32_t cmd, uint32_t arg) {
 }
 
 bool sdio_card_present(void) {
-    return (GPIOA_IDR & GPIO8) == 0;
+  return (gpio_get(GPIOC, GPIO7) == 0);
 }
 
 bool sdio_card_init(void) {
     clear_card_info();
 
-    bool card_present = (GPIOA_IDR & GPIO8) == 0;
+    bool card_present = sdio_card_present();
     if (!card_present) return 1;
 
     sdio_power_up();
@@ -217,7 +218,7 @@ bool sdio_card_init(void) {
         hcs = false;
     } else {
         sdio_power_down();
-        return false;
+	return false;
     }
 
     const uint32_t OCR_BUSY = 0x80000000;

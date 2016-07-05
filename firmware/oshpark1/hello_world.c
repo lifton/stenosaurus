@@ -22,6 +22,7 @@
 #include "leds.h"
 #include "keys.h"
 #include "lcd.h"
+#include "sdio.h"
 
 uint16_t a_keys, b_keys, c_keys, d_keys, e_keys;
 
@@ -44,25 +45,48 @@ static uint32_t test_key(void) {
   return 0;
 }
 
-static void test_lcd(void)
-{
-  char *line1 = "Hello, world!   ";
-  char *line2 = "Meet Stenosaurus";
-  lcd_set_brightness(0x60);
-  lcd_write_string(line1, LCD_LINE_1);
-  lcd_write_string(line2, LCD_LINE_2);
-}
-
 int main(void)
 {
   clock_setup();
   leds_setup();
   keys_setup();
   lcd_setup();
+  sdio_setup();
 
-  test_lcd();
+  bool card_initialized = false;
+  bool prev_present = false;
+  bool now_present = false;
+  delay(500);
+  lcd_set_brightness(0x60);
+  lcd_write_string("Insert card.    ", LCD_LINE_1);
+
   while (1) {
-    leds_blink(test_key());
+
+    // Detect and react to changes in card presence.
+    now_present = sdio_card_present();
+    if (now_present && !prev_present) {
+      lcd_write_string("Card inserted.  ", LCD_LINE_1);
+    }
+    else if (!now_present && prev_present) {
+      lcd_write_string("Card removed.   ", LCD_LINE_1);
+      lcd_write_string("                ", LCD_LINE_2);
+    }
+    prev_present = now_present;
+
+    // Detect and react to changes in card initialization.
+    if (now_present && !card_initialized) {
+      if (!sdio_card_init()) {
+	lcd_write_string("Not initialized.", LCD_LINE_2);
+      }
+      else {
+	lcd_write_string("Initialized.    ", LCD_LINE_2);
+	card_initialized = true;
+      }
+    }
+    else if (!now_present && card_initialized) {
+      lcd_write_string("                ", LCD_LINE_2);
+      card_initialized = false;
+    }
   }
 
   return 0;
