@@ -30,7 +30,7 @@
 
 extern uint8_t nkro_key_report[32];
 
-void usb_init(bool (*)(uint8_t*));
+void usb_setup(bool (*)(uint8_t*));
 
 uint32_t usb_send_serial_data(void *buf, int len);
 

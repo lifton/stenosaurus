@@ -24,8 +24,6 @@
 
 #include "protocol.h"
 
-#include "../common/leds.h"
-#include "debug.h"
 #include <libopencm3/stm32/f1/bkp.h>
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/pwr.h>

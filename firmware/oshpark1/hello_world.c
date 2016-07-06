@@ -23,6 +23,8 @@
 #include "keys.h"
 #include "lcd.h"
 #include "sdio.h"
+#include "usb.h"
+#include "protocol.h"
 
 uint16_t a_keys, b_keys, c_keys, d_keys, e_keys;
 
@@ -52,6 +54,7 @@ int main(void)
   keys_setup();
   lcd_setup();
   sdio_setup();
+  usb_setup(packet_handler);
 
   bool card_initialized = false;
   bool prev_present = false;
